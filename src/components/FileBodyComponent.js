@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import xmlToJson from 'xml-to-json-stream'
 import { loadXML } from '../actions'
+import { Level, File, Icon } from 'rbx'
+import { FaUpload } from 'react-icons/fa'
 
 const FileBodyComponent = ({ gamelist, loadXML }) => {
   const parser = xmlToJson({attributeMode:true})
@@ -27,15 +29,24 @@ const FileBodyComponent = ({ gamelist, loadXML }) => {
   }
 
   return (
-    <div>
-      <input type='file'
-             id='file'
-             className='input-file'
-             accept='.xml'
-             onChange={e => handleFileChosen(e.target.files[0])}
-      />
-    </div>
-    
+    <Level>
+      <Level.Item align='left'>
+        <File color='info' hasName>
+          <File.Label>
+            <File.Input accept='.xml' onChange={e => handleFileChosen(e.target.files[0])} />
+            <File.CTA>
+              <File.Icon>
+                <Icon size="small" color="white">
+                  <FaUpload />
+               </Icon>
+              </File.Icon>
+              <File.Label as="span">Selecione um XML</File.Label>
+            </File.CTA>
+            <File.Name>gamelist.xml</File.Name>
+          </File.Label>
+        </File>
+      </Level.Item>
+    </Level>
   )
 }
 

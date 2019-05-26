@@ -3,7 +3,8 @@ const initialState = {
     gameList: {
       game: []
     }
-  }
+  },
+  selectedGames: [] 
 }
 
 export const gamelistReducer = (state = initialState, action) => {
@@ -12,6 +13,14 @@ export const gamelistReducer = (state = initialState, action) => {
       return {
         ...state,
         gamelist: action.gamelist
+      }
+    case 'SELECT_GAME':
+      return {
+        ...state,
+        selectedGames: [
+          ...state.selectedGames,
+          action.game
+        ]
       }
     default:
       return state
