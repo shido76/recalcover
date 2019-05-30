@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { selectGame } from '../actions'
+import { editGame } from '../actions'
 import { Table, Checkbox } from 'rbx'
+import md5 from 'md5'
 
 const Game = (props) => {
-  const { game, selectGame } = props
+  const { game, editGame } = props
 
   const handleRowClick = (game) => {
-    selectGame(game)
+    editGame(game)
   }
 
   return (
@@ -18,7 +19,7 @@ const Game = (props) => {
       </Table.Cell>
       <Table.Cell>{game.name}</Table.Cell>
       <Table.Cell>{game.path}</Table.Cell>
-      <Table.Cell>{game.emulator}</Table.Cell>
+      <Table.Cell>{md5(game.path)}</Table.Cell>
     </Table.Row>
   )
 }
@@ -28,6 +29,6 @@ const mapStateToProps = store => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ selectGame }, dispatch)
+  bindActionCreators({ editGame }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game)

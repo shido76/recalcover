@@ -2,7 +2,7 @@ import { gamelistReducer } from './gamelistReducer'
 //import { otherReducer } from './otherReducer'
 import { combineReducers } from 'redux'
 
-export const Reducers = combineReducers({
+export const rootReducer = combineReducers({
   gamelistState: gamelistReducer,
   //otherState: otherReducer
 })

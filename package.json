@@ -16,6 +16,7 @@
     "react-scripts": "3.0.1",
     "react-slick": "^0.24.0",
     "redux": "^4.0.1",
+    "redux-starter-kit": "^0.5.1",
     "xml-to-json-stream": "^1.1.0"
   },
   "scripts": {
