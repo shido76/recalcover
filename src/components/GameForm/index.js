@@ -69,7 +69,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('path') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.path.join(', ')}
               </Help>
             </Field>
           </Field.Body>
@@ -86,7 +86,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('image') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.image.join(', ')}
               </Help>
             </Field>
           </Field.Body>
@@ -103,7 +103,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('desc') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.desc.join(', ')}
               </Help>
             </Field>
           </Field.Body>
@@ -120,7 +120,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('developer') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.developer.join(', ')}
               </Help>
             </Field>
             <Field>
@@ -133,7 +133,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('publisher') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.publisher.join(', ')}
               </Help>
             </Field>
           </Field.Body>
@@ -150,7 +150,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('rating') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.rating.join(', ')}
               </Help>
             </Field>
             <Field>
@@ -163,7 +163,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('releasedate') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.releasedate.join(', ')}
               </Help>
             </Field>
           </Field.Body>
@@ -180,7 +180,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('genre') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.genre.join(', ')}
               </Help>
             </Field>
             <Field>
@@ -193,7 +193,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('players') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.players.join(', ')}
               </Help>
             </Field>
             <Field>
@@ -206,7 +206,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('region') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.region.join(', ')}
               </Help>
             </Field>
           </Field.Body>
@@ -223,7 +223,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('core') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.core.join(', ')}
               </Help>
             </Field>
             <Field>
@@ -236,7 +236,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 />
               </Control>
               <Help color={ hasError('emulator') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { validation.errors.emulator.join(', ')}
               </Help>
             </Field>
           </Field.Body>
