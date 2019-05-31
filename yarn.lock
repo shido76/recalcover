@@ -2542,6 +2542,11 @@ clone-deep@^2.0.1:
     kind-of "^6.0.0"
     shallow-clone "^1.0.0"
 
+cnpj@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/cnpj/-/cnpj-2.0.0.tgz#b742b298e4591d08e2fa7799c2d44a8d70b9be1d"
+  integrity sha512-eCpfD5qaP4jARA84ibpLcb3U/bIWSAPQP/lGvkxyotTcKQu/X6ZxIDbZqrEdJMdoeSz1a5ftuRK+YdbGOJjFrA==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -2809,6 +2814,11 @@ cosmiconfig@^5.0.0, cosmiconfig@^5.2.0:
     is-directory "^0.3.1"
     js-yaml "^3.13.0"
     parse-json "^4.0.0"
+
+cpf@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/cpf/-/cpf-2.0.1.tgz#7979eb33f0a14e8217292944311faaba82cb7f02"
+  integrity sha512-YpRbrpjQCDkZgMUOLxLfme8wE8X56fHXOGMGDsYA48f7UrjaCHU0TP8d+CKmxvNVjBDVtHiCUiBw8vfstdslbw==
 
 create-ecdh@^4.0.0:
   version "4.0.3"
@@ -6110,6 +6120,11 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
+
 lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
@@ -8424,7 +8439,15 @@ react-slick@^0.24.0:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
-react@^16.8.6:
+react-valida-hook@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-valida-hook/-/react-valida-hook-0.0.6.tgz#2f41ac34de0d7834408dffd0cf5054a675ea2e0b"
+  integrity sha512-LHXOcm3bCdkB0+ST/s5f9eJZyWnMUxFi0EV8OmKOjus4inmY5gNp4xj5mqO4xPzmwa1rL9RNfGMzbUdLWe2eBA==
+  dependencies:
+    react "^16.8.0"
+    valida-js "^0.0.5"
+
+react@^16.8.0, react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
@@ -10132,6 +10155,13 @@ uuid@^3.0.1, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
+
+valida-js@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/valida-js/-/valida-js-0.0.5.tgz#79e994a70732612bb4bea519547c2d216337cef8"
+  integrity sha512-wRsN3JxSSKxzv/Y2HNpbXjNUZx0QXO9pNyEoIL+XPsIUX2L/CrfOTJ/IzI7/HgW41App+O9G2FDhmYhS25ZEcQ==
+  dependencies:
+    lodash.get "^4.4.2"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"

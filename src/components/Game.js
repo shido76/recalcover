@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { editGame } from '../actions'
 import { Table, Checkbox } from 'rbx'
-import md5 from 'md5'
 
-const Game = (props) => {
-  const { game, editGame } = props
-
+const Game = ({ game, editGame }) => {
+  
   const handleRowClick = (game) => {
     editGame(game)
   }
@@ -19,7 +17,6 @@ const Game = (props) => {
       </Table.Cell>
       <Table.Cell>{game.name}</Table.Cell>
       <Table.Cell>{game.path}</Table.Cell>
-      <Table.Cell>{md5(game.path)}</Table.Cell>
     </Table.Row>
   )
 }

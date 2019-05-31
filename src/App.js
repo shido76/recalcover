@@ -1,7 +1,7 @@
 import React from 'react'
 import FileBodyComponent from './components/FileBodyComponent'
 import ListGame from './components/ListGame'
-import GameDetail from './components/GameDetail'
+import GameForm from './components/GameForm/'
 import { Column, Section, Container } from 'rbx'
 
 function App() {
@@ -11,11 +11,11 @@ function App() {
       <Container>
         <FileBodyComponent />
         <Column.Group>
-          <Column>
+          <Column size="half">
             <ListGame />
           </Column>
           <Column>
-            <GameDetail />
+            <GameForm />
           </Column>
         </Column.Group>
       </Container>

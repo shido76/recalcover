@@ -5,6 +5,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bulma": "^0.7.5",
+    "cnpj": "^2.0.0",
+    "cpf": "^2.0.1",
     "md5": "^2.2.1",
     "node-sass": "^4.12.0",
     "rbx": "^2.1.0",
@@ -15,6 +17,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
     "react-slick": "^0.24.0",
+    "react-valida-hook": "^0.0.6",
     "redux": "^4.0.1",
     "redux-starter-kit": "^0.5.1",
     "xml-to-json-stream": "^1.1.0"

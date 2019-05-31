@@ -13,7 +13,6 @@ const ListGame = ({ gamelist }) => {
             <Table.Heading>Select</Table.Heading>
             <Table.Heading>Name</Table.Heading>
             <Table.Heading>Path</Table.Heading>
-            <Table.Heading>Emulator</Table.Heading>
           </Table.Row>
         </Table.Head>
         <Table.Body>
