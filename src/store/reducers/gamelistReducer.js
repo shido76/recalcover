@@ -39,7 +39,7 @@ export const gamelistReducer = createReducer(initialState, {
   EDIT_GAME: (state, action) => {
     state.game = { ...state.game, ...action.data }
   },
-  UPDATE_FIELD_VALUE: (state, action) => {
-    state.game[action.data.field] = action.data.value
+  UPDATE_GAME: (state, action) => {
+    state.gamelist.gameList.game[action.index] = action.data
   }
 })

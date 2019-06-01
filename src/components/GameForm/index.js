@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Field, Control, Input, Textarea, Button, Help } from 'rbx'
-import { updateFieldGame } from '../../actions'
+import { updateGame } from '../../actions'
 import useValitedForm from 'react-valida-hook'
 import validators from './validators'
 import validations from './validations'
+import md5 from 'md5'
 
-const GameForm = ({ gamelist, selectedGames, game }) => {
+const GameForm = ({ gamelist, selectedGames, game, updateGame }) => {
   const [formData, validation, validateForm, getData, setData] = useValitedForm(game, validations, validators)
 
   useEffect(() => {
@@ -20,8 +21,18 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
 
     const onSubmit = (e) => {
       e.preventDefault()
+      const game = getData() 
       const valid = validateForm()
-      console.log(getData(), valid)
+
+      if (valid) {
+        let index = gamelist.gameList.game.findIndex( g => md5(g.path) === md5(game.path))
+        
+        if (index !== -1) {
+          console.log(game, valid)
+          updateGame(game, index)
+        }
+      } 
+      
     }
     
     const hasError = (field) => validation.errors[field].length > 0
@@ -227,17 +238,24 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
                 { validation.errors.emulator.join(', ')}
               </Help>
             </Field>
+            <Field>
+              <Control expanded>
+                <Input type="text" 
+                       placeholder="RomType"
+                       color={ hasError('romtype') ? 'danger': '' } 
+                       name="romtype"
+                       { ...formData.romtype.input }
+                />
+              </Control>
+              <Help color={ hasError('romtype') ? 'danger': '' }>
+                { validation.errors.romtype.join(', ')}
+              </Help>
+            </Field>
           </Field.Body>
         </Field>
         <Field kind="group" align="right">
           <Control>
-            <Button color="success">Novo</Button>
-          </Control>
-          <Control>
             <Button color="info" disabled={false}>Salvar</Button>
-          </Control>
-          <Control>
-            <Button color="danger">Remover</Button>
           </Control>
         </Field>
       </form>
@@ -254,6 +272,6 @@ const mapStateToProps = store => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ updateFieldGame }, dispatch)
+  bindActionCreators({ updateGame }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameForm)

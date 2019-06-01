@@ -13,7 +13,8 @@ export const editGame = game => ({
   data: game
 })
 
-export const updateFieldGame = (field,value) => ({
-  type: 'UPDATE_FIELD_GAME',
-  data: { field, value }
+export const updateGame = (game, index) => ({
+  type: 'UPDATE_GAME',
+  index: index,
+  data: game
 })
