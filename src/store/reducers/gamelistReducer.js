@@ -41,5 +41,14 @@ export const gamelistReducer = createReducer(initialState, {
   },
   UPDATE_GAME: (state, action) => {
     state.gamelist.gameList.game[action.index] = action.data
-  }
+  },
+  ADD_GAME: (state, action) => {
+    state.gamelist.gameList.game.push(action.data)
+  },
+  DEL_GAME: (state, action) => {
+    state.gamelist.gameList.game = state.gamelist.gameList.game.filter(g => md5(g.path) !== md5(action.data.path))
+  },
+  CLEAR_GAME: (state, action) => {
+    state.game = initialState.game
+  } 
 })

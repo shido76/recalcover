@@ -2,13 +2,19 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Field, Control, Input, Textarea, Button, Help } from 'rbx'
-import { updateGame } from '../../actions'
+import { updateGame, addGame, clearGame } from '../../actions'
 import useValitedForm from 'react-valida-hook'
 import validators from './validators'
 import validations from './validations'
 import md5 from 'md5'
 
-const GameForm = ({ gamelist, selectedGames, game, updateGame }) => {
+const GameForm = ({ gamelist
+                  , selectedGames
+                  , game
+                  , updateGame
+                  , addGame 
+                  , clearGame
+                  }) => {
   const [formData, validation, validateForm, getData, setData] = useValitedForm(game, validations, validators)
 
   useEffect(() => {
@@ -18,6 +24,10 @@ const GameForm = ({ gamelist, selectedGames, game, updateGame }) => {
 
 
   if (gamelist.gameList.game.length > 0) {
+    const onNew = (e) => {
+      e.preventDefault()
+      clearGame()
+    }
 
     const onSubmit = (e) => {
       e.preventDefault()
@@ -30,6 +40,9 @@ const GameForm = ({ gamelist, selectedGames, game, updateGame }) => {
         if (index !== -1) {
           console.log(game, valid)
           updateGame(game, index)
+        } else {
+          console.log(game, valid)
+          addGame(game)
         }
       } 
       
@@ -254,6 +267,9 @@ const GameForm = ({ gamelist, selectedGames, game, updateGame }) => {
           </Field.Body>
         </Field>
         <Field kind="group" align="right">
+        <Control>
+            <Button color="success" disabled={false} onClick={onNew}>Novo</Button>
+          </Control>
           <Control>
             <Button color="info" disabled={false}>Salvar</Button>
           </Control>
@@ -272,6 +288,6 @@ const mapStateToProps = store => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ updateGame }, dispatch)
+  bindActionCreators({ updateGame, addGame, clearGame }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameForm)

@@ -12,7 +12,7 @@ const ListGame = ({ gamelist }) => {
           <Table.Row>
             <Table.Heading>Select</Table.Heading>
             <Table.Heading>Name</Table.Heading>
-            <Table.Heading>Path</Table.Heading>
+            <Table.Heading></Table.Heading>
           </Table.Row>
         </Table.Head>
         <Table.Body>
