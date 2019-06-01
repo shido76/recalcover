@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Field, Control, Input, Textarea, Button, Help } from 'rbx'
@@ -7,30 +7,18 @@ import useValitedForm from 'react-valida-hook'
 import validators from './validators'
 import validations from './validations'
 
-const initialState = {
-  id: '',
-  source: '',
-  path: '',
-  name: '',
-  desc: '',
-  image: '',
-  rating: '',
-  releasedate: '',
-  developer: '',
-  publisher: '',
-  genre: '',
-  players: '',
-  region: '',
-  core: '',
-  emulator: ''
-}
-
 const GameForm = ({ gamelist, selectedGames, game }) => {
-  const [formData, validation, validateForm, getData] = useValitedForm(initialState, validations, validators)
+  const [formData, validation, validateForm, getData, setData] = useValitedForm(game, validations, validators)
+
+  useEffect(() => {
+    setData(game)
+    Object.keys(validation.errors).map(key => validation.errors[key].length = 0)
+  }, [game])
+
 
   if (gamelist.gameList.game.length > 0) {
 
-    const submit = (e) => {
+    const onSubmit = (e) => {
       e.preventDefault()
       const valid = validateForm()
       console.log(getData(), valid)
@@ -39,7 +27,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
     const hasError = (field) => validation.errors[field].length > 0
 
     return (
-      <form noValidate={true} onSubmit={submit}>
+      <form noValidate onSubmit={onSubmit}>
         <Field>
           <Field.Body>
             <Field>
@@ -246,7 +234,7 @@ const GameForm = ({ gamelist, selectedGames, game }) => {
             <Button color="success">Novo</Button>
           </Control>
           <Control>
-            <Button color="info" disabled={!validation.valid}>Salvar</Button>
+            <Button color="info" disabled={false}>Salvar</Button>
           </Control>
           <Control>
             <Button color="danger">Remover</Button>
