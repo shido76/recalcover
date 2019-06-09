@@ -38,7 +38,7 @@ const FileBodyComponent = ({ gamelist, loadXML }) => {
               <File.Icon>
                 <Icon size="small" color="white">
                   <FaUpload />
-               </Icon>
+                </Icon>
               </File.Icon>
               <File.Label as="span">Selecione um XML</File.Label>
             </File.CTA>

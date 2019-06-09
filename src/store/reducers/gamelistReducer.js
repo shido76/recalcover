@@ -29,9 +29,21 @@ const initialState = {
 
 }
 
+function compare(a, b) {
+  if (a.name > b.name) {
+    return 1
+  }
+  if (a.name < b.name) {
+    return -1
+  }
+  // a must be equal to b
+  return 0
+}
+
 export const gamelistReducer = createReducer(initialState, {
   LOAD_XML: (state, action) => {
     state.gamelist = action.data
+    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
   },
   SELECT_GAME: (state, action) => {
     state.selectedGames.push( md5(action.data.path))
@@ -41,12 +53,15 @@ export const gamelistReducer = createReducer(initialState, {
   },
   UPDATE_GAME: (state, action) => {
     state.gamelist.gameList.game[action.index] = action.data
+    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
   },
   ADD_GAME: (state, action) => {
     state.gamelist.gameList.game.push(action.data)
+    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
   },
   DEL_GAME: (state, action) => {
     state.gamelist.gameList.game = state.gamelist.gameList.game.filter(g => md5(g.path) !== md5(action.data.path))
+    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
   },
   CLEAR_GAME: (state, action) => {
     state.game = initialState.game

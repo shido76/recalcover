@@ -19,6 +19,7 @@ const GameForm = ({ gamelist
 
   useEffect(() => {
     setData(game)
+    // zero validation errors
     Object.keys(validation.errors).map(key => validation.errors[key].length = 0)
   }, [game])
 
@@ -34,16 +35,18 @@ const GameForm = ({ gamelist
       const game = getData() 
       const valid = validateForm()
 
+      //Object.keys(game).map(key => game[key] = game[key].toLocaleLowerCase())
+
       if (valid) {
         let index = gamelist.gameList.game.findIndex( g => md5(g.path) === md5(game.path))
         
         if (index !== -1) {
-          console.log(game, valid)
           updateGame(game, index)
         } else {
-          console.log(game, valid)
           addGame(game)
         }
+
+        console.log(game, valid)
       } 
       
     }
@@ -277,7 +280,7 @@ const GameForm = ({ gamelist
       </form>
     )
   }
-  return <div />
+  return null
 
 }
 

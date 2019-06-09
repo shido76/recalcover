@@ -2,10 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { editGame, delGame, clearGame } from '../actions'
-import { Table, Checkbox, Button } from 'rbx'
+import { Table, Checkbox, Button, Icon } from 'rbx'
+import { FaTrash } from 'react-icons/fa'
 
 const Game = ({ game, editGame, delGame, clearGame }) => {
-  
+
   const handleRowClick = (game) => {
     editGame(game)
   }
@@ -27,7 +28,11 @@ const Game = ({ game, editGame, delGame, clearGame }) => {
         {game.name}
       </Table.Cell>
       <Table.Cell>
-        <Button color="danger" onClick={e => handleRowDelete(game)}>Remover</Button>
+        <Button color="danger" size="small" onClick={e => handleRowDelete(game)}>
+          <Icon size="small" color="white">
+            <FaTrash />
+          </Icon>
+        </Button>
       </Table.Cell>
     </Table.Row>
   )
