@@ -40,14 +40,19 @@ function compare(a, b) {
   return 0
 }
 
+function orderByName(games) {
+  return games.sort(compare)
+}
+
 export const gamelistReducer = createReducer(initialState, {
   LOAD_XML: (state, action) => {
     state.gamelist = action.data
-    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
+    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
   },
   
   SELECT_GAME: (state, action) => {
     state.selectedGames.push( md5(action.data.path))
+    state.game = initialState.game
   },
   
   UNSELECT_GAME: (state, action) => {
@@ -60,7 +65,7 @@ export const gamelistReducer = createReducer(initialState, {
   
   UPDATE_GAME: (state, action) => {
     state.gamelist.gameList.game[action.index] = action.data
-    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
+    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
   },
   
   BATCH_UPDATE_GAME: (state, action) => {
@@ -77,17 +82,17 @@ export const gamelistReducer = createReducer(initialState, {
         return
     })
     state.selectedGames = []
-    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
+    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
   },
 
   ADD_GAME: (state, action) => {
     state.gamelist.gameList.game.push(action.data)
-    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
+    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
   },
   
   DEL_GAME: (state, action) => {
     state.gamelist.gameList.game = state.gamelist.gameList.game.filter(g => md5(g.path) !== md5(action.data.path))
-    state.gamelist.gameList.game = state.gamelist.gameList.game.sort(compare)
+    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
   },
   
   CLEAR_GAME: (state, action) => {
@@ -96,6 +101,7 @@ export const gamelistReducer = createReducer(initialState, {
 
   SELECT_ALL_GAMES: (state, action) => {
     state.selectedGames = state.gamelist.gameList.game.map(g => md5(g.path))
+    state.game = initialState.game
   },
 
   UNSELECT_ALL_GAMES: (state, action) => {

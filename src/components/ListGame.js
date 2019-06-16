@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { selectAllGames, unSelectAllGames } from '../actions'
@@ -6,19 +6,19 @@ import { Table, Checkbox } from 'rbx'
 import Game from './Game'
 import md5 from 'md5'
 
-const ListGame = ({ gamelist
+const ListGame = ({ gamelist, selectedGames
                   , selectAllGames, unSelectAllGames
                   }) => {
-  const [checked, setChecked] = useState(false)
 
   const handleCheckboxChange = (e) => {
-    setChecked(prevChecked => !prevChecked)
     
     if (e.target.checked)
       selectAllGames()
     else
       unSelectAllGames()
   }
+
+  const isAllSelected = () => selectedGames.length === gamelist.gameList.game.length
 
   if (gamelist.gameList.game.length > 0)
     return (
@@ -27,7 +27,7 @@ const ListGame = ({ gamelist
           <Table.Head>
             <Table.Row>
               <Table.Heading>
-                <Checkbox checked={checked} onChange={e => handleCheckboxChange(e)} />
+                <Checkbox checked={isAllSelected()} onChange={e => handleCheckboxChange(e)} />
               </Table.Heading>
               <Table.Heading>
                 Name
@@ -50,6 +50,7 @@ const ListGame = ({ gamelist
 }
 
 const mapStateToProps = store => ({
+  selectedGames: store.gamelistState.selectedGames,
   gamelist: store.gamelistState.gamelist
 })
 
