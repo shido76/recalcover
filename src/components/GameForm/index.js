@@ -2,18 +2,14 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Field, Control, Input, Textarea, Button, Help } from 'rbx'
-import { updateGame, addGame, clearGame } from '../../actions'
+import { updateGame, addGame, clearGame, batchUpdateGame } from '../../actions'
 import useValitedForm from 'react-valida-hook'
 import validators from './validators'
 import validations from './validations'
 import md5 from 'md5'
 
-const GameForm = ({ gamelist
-                  , selectedGames
-                  , game
-                  , updateGame
-                  , addGame 
-                  , clearGame
+const GameForm = ({ gamelist, selectedGames, game
+                  , updateGame, addGame, clearGame, batchUpdateGame
                   }) => {
   const [formData, validation, validateForm, getData, setData] = useValitedForm(game, validations, validators)
 
@@ -32,21 +28,25 @@ const GameForm = ({ gamelist
 
     const onSubmit = (e) => {
       e.preventDefault()
-      const game = getData() 
-      const valid = validateForm()
+      const game = getData()
+      
+      if (selectedGames.length > 0) {
+        batchUpdateGame(game)
 
-      //Object.keys(game).map(key => game[key] = game[key].toLocaleLowerCase())
+      } else {
+        const valid = validateForm()
 
-      if (valid) {
-        let index = gamelist.gameList.game.findIndex( g => md5(g.path) === md5(game.path))
-        
-        if (index !== -1) {
-          updateGame(game, index)
-        } else {
-          addGame(game)
+        if (valid) {
+          let index = gamelist.gameList.game.findIndex( g => md5(g.path) === md5(game.path))
+          
+          if (index !== -1) {
+            updateGame(game, index)
+          } else {
+            addGame(game)
+          }
+  
+          console.log(game, valid)
         }
-
-        console.log(game, valid)
       } 
       
     }
@@ -291,6 +291,6 @@ const mapStateToProps = store => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ updateGame, addGame, clearGame }, dispatch)
+  bindActionCreators({ updateGame, addGame, clearGame, batchUpdateGame }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameForm)
