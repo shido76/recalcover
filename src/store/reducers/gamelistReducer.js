@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-starter-kit'
 import md5 from 'md5'
 
-const initialState = {
+export const initialState = {
   gamelist: {
     gameList: {
       game: []

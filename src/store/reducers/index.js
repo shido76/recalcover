@@ -1,8 +1,8 @@
 import { gamelistReducer } from './gamelistReducer'
-//import { otherReducer } from './otherReducer'
+import { uiReducer } from './uiReducer'
 import { combineReducers } from 'redux'
 
 export const rootReducer = combineReducers({
   gamelistState: gamelistReducer,
-  //otherState: otherReducer
+  uiState: uiReducer
 })

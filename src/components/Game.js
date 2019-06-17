@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { editGame, delGame, clearGame, selectGame, unSelectGame } from '../actions'
+import { editGame, delGame, clearGame, selectGame, unSelectGame, showNotification } from '../actions'
 import { Table, Checkbox, Button, Icon } from 'rbx'
 import { FaTrash } from 'react-icons/fa'
 import md5 from 'md5'
 
 const Game = ({ game, storedGame, selectedGames
-              , editGame, delGame, clearGame, selectGame, unSelectGame 
+              , editGame, delGame, clearGame, selectGame, unSelectGame, showNotification
               }) => {
 
   const handleRowClick = game => editGame(game)
@@ -23,6 +23,7 @@ const Game = ({ game, storedGame, selectedGames
     if (window.confirm("Tem certeza que deseja remover este jogo?")) {
       delGame(game)
       clearGame()
+      showNotification(true, 'success', 'Jogo removido com sucesso!')
     }
   } 
 
@@ -55,6 +56,6 @@ const mapStateToProps = store => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ editGame, delGame, clearGame, selectGame, unSelectGame }, dispatch)
+  bindActionCreators({ editGame, delGame, clearGame, selectGame, unSelectGame, showNotification }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game)

@@ -50,3 +50,13 @@ export const selectAllGames = () => ({
 export const unSelectAllGames = () => ({
   type: 'UNSELECT_ALL_GAMES',
 })
+
+
+// UI
+
+export const showNotification = (visible, color='', text='') => ({
+  type: 'SHOW_NOTIFICATION',
+  visible,
+  color,
+  text,
+})

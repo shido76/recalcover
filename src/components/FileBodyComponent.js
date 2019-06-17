@@ -2,19 +2,20 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import xmlToJson from 'xml-to-json-stream'
-import { loadXML } from '../actions'
+import { loadXML, showNotification } from '../actions'
 import { Level, File, Icon } from 'rbx'
 import { FaUpload } from 'react-icons/fa'
 
-const FileBodyComponent = ({ gamelist, loadXML }) => {
+const FileBodyComponent = ({ loadXML, showNotification }) => {
   const parser = xmlToJson({attributeMode:true})
   let fileReader
 
   const handleFileRead = (e) => {
     const content = fileReader.result
-    parser.xmlToJson(content, (err,json) => {
+    parser.xmlToJson(content, (err, json) => {
       if (err) {
         console.log(err)
+        showNotification(true, 'danger', err.message)
         return false
       }
 
@@ -23,6 +24,9 @@ const FileBodyComponent = ({ gamelist, loadXML }) => {
   }
 
   const handleFileChosen = (file) => {
+    if (file === undefined)
+      return false
+
     fileReader = new FileReader()
     fileReader.onloadend = handleFileRead
     fileReader.readAsText(file)
@@ -50,11 +54,7 @@ const FileBodyComponent = ({ gamelist, loadXML }) => {
   )
 }
 
-const mapStateToProps = store => ({
-  gamelist: store.gamelistState.gamelist
-})
-
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ loadXML }, dispatch)
+  bindActionCreators({ loadXML, showNotification }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(FileBodyComponent)
+export default connect(null, mapDispatchToProps)(FileBodyComponent)
