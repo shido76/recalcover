@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { toast } from 'react-toastify'
+import { ClassicSpinner } from "react-spinners-kit"
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import xmlToJson from 'xml-to-json-stream'
-import { loadXML, showNotification } from '../actions'
+import { loadXML } from '../actions'
 import { Level, File, Icon } from 'rbx'
 import { FaUpload } from 'react-icons/fa'
+import md5 from 'md5'
 
-const FileBodyComponent = ({ loadXML, showNotification }) => {
-  const parser = xmlToJson({attributeMode:true})
+const FileBodyComponent = ({ loadXML }) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const parser = xmlToJson({attributeMode: true})
   let fileReader
 
   const handleFileRead = (e) => {
@@ -15,17 +20,23 @@ const FileBodyComponent = ({ loadXML, showNotification }) => {
     parser.xmlToJson(content, (err, json) => {
       if (err) {
         console.log(err)
-        showNotification(true, 'danger', err.message)
+        toast.error(err.message)
+        setIsLoading(false)
         return false
       }
 
+      json.gameList.game.forEach((g, i, arr) => arr[i].md5 = md5(g.path))
       loadXML(json)
+      setIsLoading(false)
     })
   }
 
   const handleFileChosen = (file) => {
-    if (file === undefined)
+    setIsLoading(true)
+    if (file === undefined) {
+      setIsLoading(false)
       return false
+    }
 
     fileReader = new FileReader()
     fileReader.onloadend = handleFileRead
@@ -50,11 +61,19 @@ const FileBodyComponent = ({ loadXML, showNotification }) => {
           </File.Label>
         </File>
       </Level.Item>
+
+      <Level.Item align='right'>
+        <ClassicSpinner
+          size={30}
+          color="#686769"
+          loading={isLoading}
+        />
+      </Level.Item>
     </Level>
   )
 }
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ loadXML, showNotification }, dispatch)
+  bindActionCreators({ loadXML }, dispatch)
 
 export default connect(null, mapDispatchToProps)(FileBodyComponent)

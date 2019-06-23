@@ -1,13 +1,13 @@
 import React from 'react'
+import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { editGame, delGame, clearGame, selectGame, unSelectGame, showNotification } from '../actions'
+import { editGame, delGame, clearGame, selectGame, unSelectGame } from '../actions'
 import { Table, Checkbox, Button, Icon } from 'rbx'
 import { FaTrash } from 'react-icons/fa'
-import md5 from 'md5'
 
 const Game = ({ game, storedGame, selectedGames
-              , editGame, delGame, clearGame, selectGame, unSelectGame, showNotification
+              , editGame, delGame, clearGame, selectGame, unSelectGame
               }) => {
 
   const handleRowClick = game => editGame(game)
@@ -23,23 +23,27 @@ const Game = ({ game, storedGame, selectedGames
     if (window.confirm("Tem certeza que deseja remover este jogo?")) {
       delGame(game)
       clearGame()
-      showNotification(true, 'success', 'Jogo removido com sucesso!')
+      toast.success('Jogo removido com sucesso!')
     }
   } 
 
-  const isSelected = game => md5(game.path) === md5(storedGame.path)
+  const isSelected = game => game.md5 === storedGame.md5
 
-  const isChecked = game => selectedGames.includes(md5(game.path))
+  const isChecked = game => selectedGames.includes(game.md5)
+
+  const smallCell = {
+    width: '5px'  
+  }
 
   return (
     <Table.Row selected={isSelected(game)}>  
-      <Table.Cell>
+      <Table.Cell style={smallCell}>
         <Checkbox checked={isChecked(game)} onChange={e => handleCheckboxChange(game)}/>
       </Table.Cell>
       <Table.Cell onClick={e => handleRowClick(game)}>
         {game.name}
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell  style={smallCell}>
         <Button color="danger" size="small" onClick={e => handleRowDelete(game)}>
           <Icon size="small" color="white">
             <FaTrash />
@@ -56,6 +60,6 @@ const mapStateToProps = store => ({
 })
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ editGame, delGame, clearGame, selectGame, unSelectGame, showNotification }, dispatch)
+  bindActionCreators({ editGame, delGame, clearGame, selectGame, unSelectGame }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game)

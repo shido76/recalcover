@@ -1,28 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { selectAllGames, unSelectAllGames } from '../actions'
 import { Table, Checkbox } from 'rbx'
 import Game from './Game'
-import md5 from 'md5'
+import Pagination from './Pagination'
 
 const ListGame = ({ gamelist, selectedGames
                   , selectAllGames, unSelectAllGames
                   }) => {
 
+  const [pageOfItems, setPageOfItems] = useState([]) 
+ 
   const handleCheckboxChange = (e) => {
-    
     if (e.target.checked)
       selectAllGames()
     else
       unSelectAllGames()
   }
 
-  const isAllSelected = () => selectedGames.length === gamelist.gameList.game.length
+  const onChangePage = (pageOfItems) => {
+    setPageOfItems(pageOfItems)
+  }
 
-  if (gamelist.gameList.game.length > 0)
+  const isAllSelected = () => selectedGames.length === gamelist.game.length
+
+  if (gamelist.game.length > 0)
     return (
-      <div className="table-responsive">
+      <div>
         <Table bordered hoverable narrow fullwidth>
           <Table.Head>
             <Table.Row>
@@ -37,12 +42,13 @@ const ListGame = ({ gamelist, selectedGames
           </Table.Head>
           <Table.Body>
             {
-              gamelist.gameList.game.map(g =>
-                <Game key={md5(g.path)} game={g} />
+              pageOfItems.map(g =>
+                <Game key={g.md5} game={g} />
               )
             }
           </Table.Body>
         </Table>
+        <Pagination items={gamelist.game} initialPage={1} onChangePage={onChangePage} />
       </div>
     )
 

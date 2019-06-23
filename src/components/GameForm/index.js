@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Field, Control, Input, Textarea, Button, Help } from 'rbx'
@@ -20,7 +21,7 @@ const GameForm = ({ gamelist, selectedGames, game
   }, [game])
 
 
-  if (gamelist.gameList.game.length > 0) {
+  if (gamelist.game.length > 0) {
     const onNew = (e) => {
       e.preventDefault()
       clearGame()
@@ -32,19 +33,22 @@ const GameForm = ({ gamelist, selectedGames, game
       
       if (selectedGames.length > 0) {
         batchUpdateGame(game)
+        toast.success('Game(s) atualizados')
 
       } else {
         const valid = validateForm()
 
         if (valid) {
-          let index = gamelist.gameList.game.findIndex( g => md5(g.path) === md5(game.path))
+          let index = gamelist.game.findIndex( g => g.md5 === game.md5)
           
           if (index !== -1) {
             updateGame(game, index)
+            toast.success('Game atualizado!')
           } else {
+            game.md5 = md5(game.path)
             addGame(game)
+            toast.success('Game salvo!')
           }
-  
           console.log(game, valid)
         }
       } 

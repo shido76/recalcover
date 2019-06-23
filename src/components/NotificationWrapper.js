@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { showNotification } from '../actions'
@@ -7,6 +7,14 @@ import { Notification, Delete } from 'rbx'
 function NotificationWrapper({ isNotificationVisible, notificationColor, notificationMessage
                              , showNotification 
                              }) {
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isNotificationVisible) 
+        showNotification(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [isNotificationVisible])
 
   const handleDeleteClick = () => showNotification(false)
 

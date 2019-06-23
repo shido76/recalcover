@@ -1,0 +1,16 @@
+{
+  "gameList": {
+    "game": [
+      {
+        "path": "./# ATARI #",
+        "image": "./downloaded_images/logos/atari.png",
+        "name": "ATARI"
+      },
+      {
+        "path": "./# BANPRESTO #",
+        "image": "./downloaded_images/logos/banpresto.png",
+        "name": "BANPRESTO"
+      }   
+    ]
+  }
+}

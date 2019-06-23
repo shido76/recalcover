@@ -1,11 +1,8 @@
 import { createReducer } from 'redux-starter-kit'
-import md5 from 'md5'
 
 export const initialState = {
   gamelist: {
-    gameList: {
-      game: []
-    }
+    game: []
   },
   selectedGames: [],
   game: {
@@ -30,10 +27,13 @@ export const initialState = {
 }
 
 function compare(a, b) {
-  if (a.name > b.name) {
+  const aa = a.name.toLocaleUpperCase()
+  const bb = b.name.toLocaleUpperCase()
+
+  if (aa > bb) {
     return 1
   }
-  if (a.name < b.name) {
+  if (aa < bb) {
     return -1
   }
   // a must be equal to b
@@ -46,17 +46,17 @@ function orderByName(games) {
 
 export const gamelistReducer = createReducer(initialState, {
   LOAD_XML: (state, action) => {
-    state.gamelist = action.data
-    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
+    if ('gameList' in action.data && 'game' in action.data.gameList)
+      state.gamelist.game = orderByName(action.data.gameList.game)
   },
   
   SELECT_GAME: (state, action) => {
-    state.selectedGames.push( md5(action.data.path))
+    state.selectedGames.push(action.data.md5)
     state.game = initialState.game
   },
   
   UNSELECT_GAME: (state, action) => {
-    state.selectedGames = state.selectedGames.filter(g => g !== md5(action.data.path))
+    state.selectedGames = state.selectedGames.filter(g => g !== action.data.md5)
   },
   
   EDIT_GAME: (state, action) => {
@@ -64,13 +64,13 @@ export const gamelistReducer = createReducer(initialState, {
   },
   
   UPDATE_GAME: (state, action) => {
-    state.gamelist.gameList.game[action.index] = action.data
-    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
+    state.gamelist.game[action.index] = action.data
+    state.gamelist.game = orderByName(state.gamelist.game)
   },
   
   BATCH_UPDATE_GAME: (state, action) => {
-    state.gamelist.gameList.game.forEach((g, index, arr) => {
-      if ( state.selectedGames.includes(md5(g.path)) )
+    state.gamelist.game.forEach((g, index, arr) => {
+      if ( state.selectedGames.includes(g.md5) )
         Object.keys(action.data)
               .forEach(key => { 
                 if (action.data[key] === '')
@@ -82,17 +82,17 @@ export const gamelistReducer = createReducer(initialState, {
         return
     })
     state.selectedGames = []
-    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
+    state.gamelist.game = orderByName(state.gamelist.game)
   },
 
   ADD_GAME: (state, action) => {
-    state.gamelist.gameList.game.push(action.data)
-    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
+    state.gamelist.game.push(action.data)
+    state.gamelist.game = orderByName(state.gamelist.game)
   },
   
   DEL_GAME: (state, action) => {
-    state.gamelist.gameList.game = state.gamelist.gameList.game.filter(g => md5(g.path) !== md5(action.data.path))
-    state.gamelist.gameList.game = orderByName(state.gamelist.gameList.game)
+    state.gamelist.game = state.gamelist.game.filter(g => g.md5 !== action.data.md5)
+    state.gamelist.game = orderByName(state.gamelist.game)
   },
   
   CLEAR_GAME: (state, action) => {
@@ -100,7 +100,7 @@ export const gamelistReducer = createReducer(initialState, {
   },
 
   SELECT_ALL_GAMES: (state, action) => {
-    state.selectedGames = state.gamelist.gameList.game.map(g => md5(g.path))
+    state.selectedGames = state.gamelist.game.map(g => g.md5)
     state.game = initialState.game
   },
 
