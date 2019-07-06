@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { selectAllGames, unSelectAllGames } from '../actions'
 import { Table, Checkbox } from 'rbx'
 import Game from './Game'
 import Pagination from './Pagination'
+import { selectAllGames, unSelectAllGames } from '../actions'
 
 const ListGame = ({ gamelist, selectedGames
                   , selectAllGames, unSelectAllGames
@@ -57,7 +57,7 @@ const ListGame = ({ gamelist, selectedGames
 
 const mapStateToProps = store => ({
   selectedGames: store.gamelistState.selectedGames,
-  gamelist: store.gamelistState.gamelist
+  gamelist: store.gamelistState.gamelist,
 })
 
 const mapDispatchToProps = dispatch =>

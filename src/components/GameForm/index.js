@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
-import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Field, Control, Input, Textarea, Button, Help } from 'rbx'
-import { updateGame, addGame, clearGame, batchUpdateGame } from '../../actions'
+import { toast } from 'react-toastify'
+import { Field, Control, Input, Textarea, Button, Help, Image } from 'rbx'
 import useValitedForm from 'react-valida-hook'
+import md5 from 'md5'
 import validators from './validators'
 import validations from './validations'
-import md5 from 'md5'
+import { updateGame, addGame, clearGame, batchUpdateGame } from '../../actions'
 
-const GameForm = ({ gamelist, selectedGames, game
+const GameForm = ({ basePath, gamelist, selectedGames, game
                   , updateGame, addGame, clearGame, batchUpdateGame
                   }) => {
   const [formData, validation, validateForm, getData, setData] = useValitedForm(game, validations, validators)
@@ -22,6 +22,18 @@ const GameForm = ({ gamelist, selectedGames, game
 
 
   if (gamelist.game.length > 0) {
+
+    const imageFile = (basePath, game) => {
+      let path
+      if (process.platform === 'win32') {
+        path = `file://${basePath}${game.image.replace("/","\\")}`
+      } else {
+        path = `file://${basePath}${game.image}`
+      }
+
+      return path
+    }
+
     const onNew = (e) => {
       e.preventDefault()
       clearGame()
@@ -124,6 +136,13 @@ const GameForm = ({ gamelist, selectedGames, game
               <Help color={ hasError('desc') ? 'danger': '' }>
                 { validation.errors.desc.join(', ')}
               </Help>
+            </Field>
+            <Field>
+              <Image.Container size={'4by3'}>
+                <Image
+                  src={imageFile(basePath, game)}
+                />
+              </Image.Container>
             </Field>
           </Field.Body>
         </Field>
@@ -289,6 +308,7 @@ const GameForm = ({ gamelist, selectedGames, game
 }
 
 const mapStateToProps = store => ({
+  basePath: store.gamelistState.basePath,
   gamelist: store.gamelistState.gamelist,
   selectedGames: store.gamelistState.selectedGames,
   game: store.gamelistState.game

@@ -51,12 +51,7 @@ export const unSelectAllGames = () => ({
   type: 'UNSELECT_ALL_GAMES',
 })
 
-
-// UI
-
-export const showNotification = (visible, color='', text='') => ({
-  type: 'SHOW_NOTIFICATION',
-  visible,
-  color,
-  text,
+export const setBasePath = (basePath) => ({
+  type: 'SET_BASE_PATH',
+  data: basePath
 })

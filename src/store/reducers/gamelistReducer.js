@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-starter-kit'
 
 export const initialState = {
+  basePath: '',
   gamelist: {
     game: []
   },
@@ -106,5 +107,9 @@ export const gamelistReducer = createReducer(initialState, {
 
   UNSELECT_ALL_GAMES: (state, action) => {
     state.selectedGames = []
+  },
+
+  SET_BASE_PATH: (state, action) => {
+    state.basePath = action.data.replace('gamelist.xml', '')
   }
 })

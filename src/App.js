@@ -1,10 +1,10 @@
 import React from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Column, Container, Card } from 'rbx'
 import FileBodyComponent from './components/FileBodyComponent'
 import ListGame from './components/ListGame'
 import GameForm from './components/GameForm'
-import { Column, Container, Card } from 'rbx'
 
 function App() {
 
