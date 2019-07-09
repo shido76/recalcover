@@ -22,7 +22,7 @@
     "valid-typeof": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "quotes": [
-      2,
+      "off",
       "single"
     ],
     "semi": [

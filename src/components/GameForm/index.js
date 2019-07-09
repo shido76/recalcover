@@ -27,7 +27,7 @@ const GameForm = ({ basePath, gamelist, selectedGames, game
     const imageFile = (basePath, game) => {
       let path
       if (process.platform === 'win32') {
-        path = `file://${basePath}${game.image.replace("/","\\")}`
+        path = `file://${basePath}${game.image.replace('/', '\\')}`
       } else {
         path = `file://${basePath}${game.image}`
       }
@@ -71,7 +71,7 @@ const GameForm = ({ basePath, gamelist, selectedGames, game
     const onSaveGamelist = (e) => {
       let gameListFile
 
-      function toXml(games) {
+      const toXml = (games) => {
         let xml
         xml = "<?xml version='1.0' encoding='utf-8'?>\n"
         xml += "  <gameList>\n"

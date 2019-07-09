@@ -50,25 +50,25 @@ export const gamelistReducer = createReducer(initialState, {
     if ('gameList' in action.data && 'game' in action.data.gameList)
       state.gamelist.game = orderByName(action.data.gameList.game)
   },
-  
+
   SELECT_GAME: (state, action) => {
     state.selectedGames.push(action.data.md5)
     state.game = initialState.game
   },
-  
+
   UNSELECT_GAME: (state, action) => {
     state.selectedGames = state.selectedGames.filter(g => g !== action.data.md5)
   },
-  
+
   EDIT_GAME: (state, action) => {
     state.game = { ...state.game, ...action.data }
   },
-  
+
   UPDATE_GAME: (state, action) => {
     state.gamelist.game[action.index] = action.data
     state.gamelist.game = orderByName(state.gamelist.game)
   },
-  
+
   BATCH_UPDATE_GAME: (state, action) => {
     state.gamelist.game.forEach((g, index, arr) => {
       if ( state.selectedGames.includes(g.md5) )
@@ -90,14 +90,20 @@ export const gamelistReducer = createReducer(initialState, {
     state.gamelist.game.push(action.data)
     state.gamelist.game = orderByName(state.gamelist.game)
   },
-  
+
   DEL_GAME: (state, action) => {
     state.gamelist.game = state.gamelist.game.filter(g => g.md5 !== action.data.md5)
     state.gamelist.game = orderByName(state.gamelist.game)
   },
-  
+
   CLEAR_GAME: (state, action) => {
     state.game = initialState.game
+  },
+
+  FILTER_GAME: (state, action) => {
+    const re = new RegExp(action.data, 'gi')
+    state.gamelist.game = state.gamelist.game.filter(g => g.name && g.name.match(re))
+    state.gamelist.game = orderByName(state.gamelist.game)
   },
 
   SELECT_ALL_GAMES: (state, action) => {
@@ -111,5 +117,6 @@ export const gamelistReducer = createReducer(initialState, {
 
   SET_BASE_PATH: (state, action) => {
     state.basePath = action.data.replace('gamelist.xml', '')
-  }
+  },
+
 })

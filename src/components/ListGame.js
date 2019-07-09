@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Checkbox } from 'rbx'
+import { Table, Checkbox, Field, Control, Input, Button } from 'rbx'
 import Game from './Game'
+import Search from './Search'
 import Pagination from './Pagination'
 import { selectAllGames, unSelectAllGames } from '../actions'
 
@@ -10,8 +11,8 @@ const ListGame = ({ gamelist, selectedGames
                   , selectAllGames, unSelectAllGames
                   }) => {
 
-  const [pageOfItems, setPageOfItems] = useState([]) 
- 
+  const [pageOfItems, setPageOfItems] = useState([])
+
   const handleCheckboxChange = (e) => {
     if (e.target.checked)
       selectAllGames()
@@ -28,6 +29,7 @@ const ListGame = ({ gamelist, selectedGames
   if (gamelist.game.length > 0)
     return (
       <div>
+        <Search />
         <Table bordered hoverable narrow fullwidth>
           <Table.Head>
             <Table.Row>
