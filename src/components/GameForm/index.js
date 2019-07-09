@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { Field, Control, Input, Textarea, Button, Help, Image } from 'rbx'
 import useValitedForm from 'react-valida-hook'
 import md5 from 'md5'
+import fs from 'fs'
 import validators from './validators'
 import validations from './validations'
 import { updateGame, addGame, clearGame, batchUpdateGame } from '../../actions'
@@ -66,7 +67,43 @@ const GameForm = ({ basePath, gamelist, selectedGames, game
       } 
       
     }
-    
+
+    const onSaveGamelist = (e) => {
+      let gameListFile
+
+      function toXml(games) {
+        let xml
+        xml = "<?xml version='1.0' encoding='utf-8'?>\n"
+        xml += "  <gameList>\n"
+      
+        games.forEach((game) => {
+          xml += "    <game>\n"
+          for (let [key, value] of Object.entries(game)) {
+            xml += `      <${key}>${value}</${key}>\n`
+          }
+          xml += "    </game>\n"
+        })
+        
+        xml += "  </gameList>\n"
+        return xml
+      }
+
+      e.preventDefault()
+
+      if (process.platform === 'win32') {
+        gameListFile = `${basePath}gamelist-saved.xml`
+      } else {
+        gameListFile = `${basePath}gamelist-saved.xml`
+      }
+
+      fs.writeFile(gameListFile, toXml(gamelist.game), (err) => {
+        if (err)
+          toast.success(err.message)
+        else
+          toast.success('Novo Gamelist Salvo!')
+      })
+    }
+
     const hasError = (field) => validation.errors[field].length > 0
 
     return (
@@ -293,11 +330,14 @@ const GameForm = ({ basePath, gamelist, selectedGames, game
           </Field.Body>
         </Field>
         <Field kind="group" align="right">
-        <Control>
+          <Control>
             <Button color="success" disabled={false} onClick={onNew}>Novo</Button>
           </Control>
           <Control>
             <Button color="info" disabled={false}>Salvar</Button>
+          </Control>
+          <Control>
+            <Button color="warning" disabled={false} onClick={onSaveGamelist}>Salvar Gamelist</Button>
           </Control>
         </Field>
       </form>
@@ -311,7 +351,7 @@ const mapStateToProps = store => ({
   basePath: store.gamelistState.basePath,
   gamelist: store.gamelistState.gamelist,
   selectedGames: store.gamelistState.selectedGames,
-  game: store.gamelistState.game
+  game: store.gamelistState.game,
 })
 
 const mapDispatchToProps = dispatch =>
