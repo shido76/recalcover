@@ -7,7 +7,7 @@ import Search from './Search'
 import Pagination from './Pagination'
 import { selectAllGames, unSelectAllGames } from '../actions'
 
-const ListGame = ({ gamelist, selectedGames
+const ListGame = ({ games, selectedGames
                   , selectAllGames, unSelectAllGames
                   }) => {
 
@@ -24,9 +24,9 @@ const ListGame = ({ gamelist, selectedGames
     setPageOfItems(pageOfItems)
   }
 
-  const isAllSelected = () => selectedGames.length === gamelist.game.length
+  const isAllSelected = () => selectedGames.length === games.length
 
-  if (gamelist.game.length > 0)
+  if (games.length > 0)
     return (
       <div>
         <Search />
@@ -50,7 +50,7 @@ const ListGame = ({ gamelist, selectedGames
             }
           </Table.Body>
         </Table>
-        <Pagination items={gamelist.game} initialPage={1} onChangePage={onChangePage} />
+        <Pagination items={games} initialPage={1} onChangePage={onChangePage} />
       </div>
     )
 
@@ -59,7 +59,7 @@ const ListGame = ({ gamelist, selectedGames
 
 const mapStateToProps = store => ({
   selectedGames: store.gamelistState.selectedGames,
-  gamelist: store.gamelistState.gamelist,
+  games: store.gamelistState.games,
 })
 
 const mapDispatchToProps = dispatch =>

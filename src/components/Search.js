@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Field, Control, Input, Button } from 'rbx'
 import { filterGame } from '../actions'
 
-const Search = ({ gamelist
+const Search = ({ games
                 , filterGame
                 }) => {
 
@@ -20,7 +20,7 @@ const Search = ({ gamelist
 }
 
 const mapStateToProps = store => ({
-  gamelist: store.gamelistState.gamelist,
+  games: store.gamelistState.games,
 })
 
 const mapDispatchToProps = dispatch =>

@@ -10,7 +10,7 @@ import validators from './validators'
 import validations from './validations'
 import { updateGame, addGame, clearGame, batchUpdateGame } from '../../actions'
 
-const GameForm = ({ basePath, gamelist, selectedGames, game
+const GameForm = ({ basePath, games, selectedGames, game
                   , updateGame, addGame, clearGame, batchUpdateGame
                   }) => {
   const [formData, validation, validateForm, getData, setData] = useValitedForm(game, validations, validators)
@@ -22,7 +22,7 @@ const GameForm = ({ basePath, gamelist, selectedGames, game
   }, [game])
 
 
-  if (gamelist.game.length > 0) {
+  if (games.length > 0) {
 
     const imageFile = (basePath, game) => {
       let path
@@ -52,7 +52,7 @@ const GameForm = ({ basePath, gamelist, selectedGames, game
         const valid = validateForm()
 
         if (valid) {
-          let index = gamelist.game.findIndex( g => g.md5 === game.md5)
+          let index = games.findIndex( g => g.md5 === game.md5)
           
           if (index !== -1) {
             updateGame(game, index)
@@ -96,7 +96,7 @@ const GameForm = ({ basePath, gamelist, selectedGames, game
         gameListFile = `${basePath}gamelist-saved.xml`
       }
 
-      fs.writeFile(gameListFile, toXml(gamelist.game), (err) => {
+      fs.writeFile(gameListFile, toXml(games), (err) => {
         if (err)
           toast.success(err.message)
         else
@@ -349,7 +349,7 @@ const GameForm = ({ basePath, gamelist, selectedGames, game
 
 const mapStateToProps = store => ({
   basePath: store.gamelistState.basePath,
-  gamelist: store.gamelistState.gamelist,
+  games: store.gamelistState.games,
   selectedGames: store.gamelistState.selectedGames,
   game: store.gamelistState.game,
 })
