@@ -4,7 +4,10 @@ import jsonFile from './test.json'
 describe('gamelist Reducer', () => {
   it('LOAD_XML', () => {
     const action = { type: 'LOAD_XML', data: jsonFile }
-    const state = Object.assign({}, initialState, { gamelist: { game: jsonFile.gameList.game }})
+    const state = Object.assign({}, initialState,
+                                { games: jsonFile.gameList.game },
+                                { backupGames: jsonFile.gameList.game },
+                               )
     expect(gamelistReducer(initialState, action)).toEqual(state)
   })
 
@@ -29,10 +32,16 @@ describe('gamelist Reducer', () => {
   it('UPDATE_GAME', () => {
     let game = { path: "./# ATARI #", image: "./downloaded_images/logos/atari.png", name: "ABA" }
     const action = { type: 'UPDATE_GAME', index: 0, data: game }
-    
-    let originalState = Object.assign({}, initialState, { gamelist: { game: jsonFile.gameList.game }})
-    let state = Object.assign({}, initialState, { gamelist: { game: jsonFile.gameList.game }})
-    state.gamelist.game[0].name = 'ABA'
+
+    let originalState = Object.assign({}, initialState,
+                                      { games: jsonFile.gameList.game },
+                                      { backupGames: jsonFile.gameList.game },
+                                     )
+    let state = Object.assign({}, initialState,
+                              { games: jsonFile.gameList.game },
+                              { backupGames: jsonFile.gameList.game },
+                             )
+    state.games[0].name = 'ABA'
 
     expect(gamelistReducer(originalState, action)).toEqual(state)
   })

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Field, Control, Input, Button } from 'rbx'
+import { Field, Control, Input } from 'rbx'
 import { filterGame } from '../actions'
 
 const Search = ({ games

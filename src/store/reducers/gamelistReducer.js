@@ -22,8 +22,9 @@ export const initialState = {
     core: '',
     emulator: '',
     romtype: '',
+    favorite: false,
+    hidden: false,
   }
-
 }
 
 function orderByName(games) {
