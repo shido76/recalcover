@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import JwPagination from 'jw-react-pagination'
 
 function Pagination({ items, initialPage, onChangePage }) {

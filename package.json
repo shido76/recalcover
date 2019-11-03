@@ -1,19 +1,45 @@
 {
   "name": "recalcover",
+  "description": "Electron + Create React App + Electron Builder",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Shido76",
+    "email": "fdescartes@gmail.com",
+    "url": "https://xxx.com"
+  },
+  "build": {
+    "appId": "com.xxx.recalcover",
+    "productName": "Recal Cover",
+    "copyright": "Copyright © 2019 ${author}",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
   "dependencies": {
-    "axios": "^0.18.0",
-    "beautiful-react-redux": "^2.1.0",
+    "axios": "^0.18.1",
     "bulma": "^0.7.5",
     "cnpj": "^2.0.0",
     "cpf": "^2.0.1",
+    "electron-is-dev": "^1.1.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.14.2",
     "jw-react-pagination": "^1.1.0",
     "md5": "^2.2.1",
     "node-sass": "^4.12.0",
     "rbx": "^2.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-hook-form": "^3.18.8",
     "react-icons": "^3.7.0",
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
@@ -21,20 +47,32 @@
     "react-slick": "^0.24.0",
     "react-spinners-kit": "^1.9.0",
     "react-toastify": "^5.3.1",
-    "react-valida-hook": "^0.0.6",
     "redux": "^4.0.1",
     "redux-starter-kit": "^0.5.1",
     "styled-components": "^4.3.2",
     "xml-to-json-stream": "^1.1.0"
   },
+  "homepage": "./",
+  "main": "public/electron.js",
   "scripts": {
-    "start": "PORT=5000 HOST='0.0.0.0' react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "nf start -p 3000",
+    "build": "rescripts build",
+    "test": "rescripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-start": "node src/start-react",
+    "react-start": "BROWSER=none rescripts start",
+    "postinstall": "electron-builder install-app-deps",
+    "preelectron-pack": "yarn build",
+    "electron-pack": "build -mwl"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "devDependencies": {
+    "@rescripts/cli": "^0.0.11",
+    "@rescripts/rescript-env": "^0.0.10",
+    "cross-env": "^5.2.0",
+    "electron": "^5.0.5",
+    "electron-builder": "^20.44.4",
+    "typescript": "^3.5.2"
   },
   "browserslist": {
     "production": [

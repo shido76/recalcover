@@ -1,45 +1,68 @@
 import React, { useEffect } from 'react'
-import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Field, Control, Input, Textarea, Button, Help } from 'rbx'
-import { updateGame, addGame, clearGame, batchUpdateGame } from '../../actions'
-import useValitedForm from 'react-valida-hook'
-import validators from './validators'
-import validations from './validations'
+import { toast } from 'react-toastify'
+import { Field, Control, Input, Textarea, Button, Help, Image, Checkbox, Label } from 'rbx'
+import useForm from 'react-hook-form'
 import md5 from 'md5'
+import fs from 'fs'
+import { updateGame, addGame, clearGame, batchUpdateGame } from '../../actions'
 
-const GameForm = ({ gamelist, selectedGames, game
+const GameForm = ({ basePath, games, selectedGames, game
                   , updateGame, addGame, clearGame, batchUpdateGame
                   }) => {
-  const [formData, validation, validateForm, getData, setData] = useValitedForm(game, validations, validators)
+
+  const { register, handleSubmit, getValues, setValue, errors, reset, formState } = useForm()
 
   useEffect(() => {
-    setData(game)
-    // zero validation errors
-    Object.keys(validation.errors).map(key => validation.errors[key].length = 0)
+    setValue('name', game.name)
+    setValue('md5', game.md5)
+    setValue('path', game.path)
+    setValue('image', game.image)
+    setValue('desc', game.desc)
+    setValue('favorite', game.favorite)
+    setValue('hidden', game.hidden)
+    setValue('developer', game.developer)
+    setValue('publisher', game.publisher)
+    setValue('rating', game.rating)
+    setValue('releasedate', game.releasedate)
+    setValue('genre', game.genre)
+    setValue('players', game.players)
+    setValue('region', game.region)
+    setValue('core', game.core)
+    setValue('emulator', game.emulator)
+    setValue('romtype', game.romtype)
   }, [game])
 
+  if (games.length > 0) {
 
-  if (gamelist.game.length > 0) {
+    const imageFile = (basePath, game) => {
+      let path
+      if (process.platform === 'win32') {
+        path = `file://${basePath}${game.image.replace('/', '\\')}`
+      } else {
+        path = `file://${basePath}${game.image}`
+      }
+
+      return path
+    }
+
     const onNew = (e) => {
       e.preventDefault()
       clearGame()
+      reset()
     }
 
-    const onSubmit = (e) => {
-      e.preventDefault()
-      const game = getData()
+    const onSubmit = (data) => {
+      const game = data
       
       if (selectedGames.length > 0) {
         batchUpdateGame(game)
         toast.success('Game(s) atualizados')
 
       } else {
-        const valid = validateForm()
-
-        if (valid) {
-          let index = gamelist.game.findIndex( g => g.md5 === game.md5)
+        if (formState.isValid) {
+          let index = games.findIndex( g => g.md5 === game.md5)
           
           if (index !== -1) {
             updateGame(game, index)
@@ -49,16 +72,53 @@ const GameForm = ({ gamelist, selectedGames, game
             addGame(game)
             toast.success('Game salvo!')
           }
-          console.log(game, valid)
+          console.log(game)
+
         }
       } 
       
     }
-    
-    const hasError = (field) => validation.errors[field].length > 0
+
+    const onSaveGamelist = (e) => {
+      let gameListFile
+
+      const toXml = (games) => {
+        let xml
+        xml = "<?xml version='1.0' encoding='utf-8'?>\n"
+        xml += "  <gameList>\n"
+      
+        games.forEach((game) => {
+          xml += "    <game>\n"
+          for (let [key, value] of Object.entries(game)) {
+            xml += `      <${key}>${value}</${key}>\n`
+          }
+          xml += "    </game>\n"
+        })
+        
+        xml += "  </gameList>\n"
+        return xml
+      }
+
+      e.preventDefault()
+
+      if (process.platform === 'win32') {
+        gameListFile = `${basePath}gamelist-saved.xml`
+      } else {
+        gameListFile = `${basePath}gamelist-saved.xml`
+      }
+
+      fs.writeFile(gameListFile, toXml(games), (err) => {
+        if (err)
+          toast.success(err.message)
+        else
+          toast.success('Novo Gamelist Salvo!')
+      })
+    }
+
+    const hasError = (field) => errors[field]
 
     return (
-      <form noValidate onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Field>
           <Field.Body>
             <Field>
@@ -67,11 +127,17 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Name" 
                        color={ hasError('name') ? 'danger': '' } 
                        name="name"
-                       { ...formData.name.input }
+                       ref={register}
+                       defaultValue={game.name}
+                />
+                <Input type="hidden"
+                       name="md5"
+                       ref={register}
+                       defaultValue={game.md5}
                 />
               </Control>
               <Help color={ hasError('name') ? 'danger': '' }>
-                { validation.errors.name.join(', ')}
+                { errors.name }
               </Help>
             </Field>
           </Field.Body>
@@ -84,11 +150,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Path" 
                        color={ hasError('path') ? 'danger': '' } 
                        name="path"
-                       { ...formData.path.input }
+                       ref={register}
+                       defaultValue={game.path}
                 />
               </Control>
               <Help color={ hasError('path') ? 'danger': '' }>
-                { validation.errors.path.join(', ')}
+                { errors.path}
               </Help>
             </Field>
           </Field.Body>
@@ -101,11 +168,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Image"
                        color={ hasError('image') ? 'danger': '' } 
                        name="image"
-                       { ...formData.image.input }
+                       ref={register}
+                       defaultValue={game.image}
                 />
               </Control>
               <Help color={ hasError('image') ? 'danger': '' }>
-                { validation.errors.image.join(', ')}
+                { errors.image}
               </Help>
             </Field>
           </Field.Body>
@@ -118,12 +186,33 @@ const GameForm = ({ gamelist, selectedGames, game
                           placeholder="Desc" 
                           color={ hasError('desc') ? 'danger': '' } 
                           name="desc"
-                          { ...formData.desc.input }
+                          ref={register}
+                          defaultValue={game.desc}
                 />
               </Control>
               <Help color={ hasError('desc') ? 'danger': '' }>
-                { validation.errors.desc.join(', ')}
+                { errors.desc}
               </Help>
+            </Field>
+            <Field>
+              <Image.Container size={'4by3'}>
+                <Image
+                  src={imageFile(basePath, game)}
+                />
+              </Image.Container>
+              <Label>
+                <Checkbox name="favorite"
+                          ref={register}
+                          defaultChecked={game.favorite}
+                /> Favorito
+              </Label>
+              &nbsp;
+              <Label>
+                <Checkbox name="hidden"
+                          ref={register}
+                          defaultChecked={game.hidden}
+                /> Oculto
+              </Label>
             </Field>
           </Field.Body>
         </Field>
@@ -135,11 +224,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Developer"
                        color={ hasError('developer') ? 'danger': '' } 
                        name="developer"
-                       { ...formData.developer.input }
+                       ref={register}
+                       defaultValue={game.developer}
                 />
               </Control>
               <Help color={ hasError('developer') ? 'danger': '' }>
-                { validation.errors.developer.join(', ')}
+                { errors.developer}
               </Help>
             </Field>
             <Field>
@@ -148,11 +238,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Publisher"
                        color={ hasError('publisher') ? 'danger': '' } 
                        name="publisher"
-                       { ...formData.publisher.input }
+                       ref={register}
+                       defaultValue={game.publisher}
                 />
               </Control>
               <Help color={ hasError('publisher') ? 'danger': '' }>
-                { validation.errors.publisher.join(', ')}
+                { errors.publisher}
               </Help>
             </Field>
           </Field.Body>
@@ -165,11 +256,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Rating"
                        color={ hasError('rating') ? 'danger': '' } 
                        name="rating"
-                       { ...formData.rating.input }
+                       ref={register}
+                       defaultValue={game.rating}
                 />
               </Control>
               <Help color={ hasError('rating') ? 'danger': '' }>
-                { validation.errors.rating.join(', ')}
+                { errors.rating}
               </Help>
             </Field>
             <Field>
@@ -178,11 +270,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Release Date"
                        color={ hasError('releasedate') ? 'danger': '' } 
                        name="releasedate"
-                       { ...formData.releasedate.input }
+                       ref={register}
+                       defaultValue={game.releasedate}
                 />
               </Control>
               <Help color={ hasError('releasedate') ? 'danger': '' }>
-                { validation.errors.releasedate.join(', ')}
+                { errors.releasedate}
               </Help>
             </Field>
           </Field.Body>
@@ -195,11 +288,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Genre"
                        color={ hasError('genre') ? 'danger': '' } 
                        name="genre"
-                       { ...formData.genre.input }
+                       ref={register}
+                       defaultValue={game.genre}
                 />
               </Control>
               <Help color={ hasError('genre') ? 'danger': '' }>
-                { validation.errors.genre.join(', ')}
+                { errors.genre}
               </Help>
             </Field>
             <Field>
@@ -208,11 +302,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Players"
                        color={ hasError('players') ? 'danger': '' } 
                        name="players"
-                       { ...formData.players.input }
+                       ref={register}
+                       defaultValue={game.players}
                 />
               </Control>
               <Help color={ hasError('players') ? 'danger': '' }>
-                { validation.errors.players.join(', ')}
+                { errors.players}
               </Help>
             </Field>
             <Field>
@@ -221,11 +316,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Region"
                        color={ hasError('region') ? 'danger': '' } 
                        name="region"
-                       { ...formData.region.input }
+                       ref={register}
+                       defaultValue={game.region}
                 />
               </Control>
               <Help color={ hasError('region') ? 'danger': '' }>
-                { validation.errors.region.join(', ')}
+                { errors.region}
               </Help>
             </Field>
           </Field.Body>
@@ -238,11 +334,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Core"
                        color={ hasError('core') ? 'danger': '' } 
                        name="core"
-                       { ...formData.core.input }
+                       ref={register}
+                       defaultValue={game.core}
                 />
               </Control>
               <Help color={ hasError('core') ? 'danger': '' }>
-                { validation.errors.core.join(', ')}
+                { errors.core}
               </Help>
             </Field>
             <Field>
@@ -251,11 +348,12 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="Emulator"
                        color={ hasError('emulator') ? 'danger': '' } 
                        name="emulator"
-                       { ...formData.emulator.input }
+                       ref={register}
+                       defaultValue={game.emulator}
                 />
               </Control>
               <Help color={ hasError('emulator') ? 'danger': '' }>
-                { validation.errors.emulator.join(', ')}
+                { errors.emulator}
               </Help>
             </Field>
             <Field>
@@ -264,21 +362,25 @@ const GameForm = ({ gamelist, selectedGames, game
                        placeholder="RomType"
                        color={ hasError('romtype') ? 'danger': '' } 
                        name="romtype"
-                       { ...formData.romtype.input }
+                       ref={register}
+                       defaultValue={game.romtype}
                 />
               </Control>
               <Help color={ hasError('romtype') ? 'danger': '' }>
-                { validation.errors.romtype.join(', ')}
+                { errors.romtype}
               </Help>
             </Field>
           </Field.Body>
         </Field>
         <Field kind="group" align="right">
-        <Control>
+          <Control>
             <Button color="success" disabled={false} onClick={onNew}>Novo</Button>
           </Control>
           <Control>
             <Button color="info" disabled={false}>Salvar</Button>
+          </Control>
+          <Control>
+            <Button color="warning" disabled={false} onClick={onSaveGamelist}>Salvar Gamelist</Button>
           </Control>
         </Field>
       </form>
@@ -289,9 +391,10 @@ const GameForm = ({ gamelist, selectedGames, game
 }
 
 const mapStateToProps = store => ({
-  gamelist: store.gamelistState.gamelist,
+  basePath: store.gamelistState.basePath,
+  games: store.gamelistState.games,
   selectedGames: store.gamelistState.selectedGames,
-  game: store.gamelistState.game
+  game: store.gamelistState.game,
 })
 
 const mapDispatchToProps = dispatch =>

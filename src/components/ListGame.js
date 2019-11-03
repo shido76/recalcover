@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { selectAllGames, unSelectAllGames } from '../actions'
 import { Table, Checkbox } from 'rbx'
 import Game from './Game'
+import Search from './Search'
 import Pagination from './Pagination'
+import { selectAllGames, unSelectAllGames } from '../actions'
 
-const ListGame = ({ gamelist, selectedGames
+const ListGame = ({ games, selectedGames
                   , selectAllGames, unSelectAllGames
                   }) => {
 
-  const [pageOfItems, setPageOfItems] = useState([]) 
- 
+  const [pageOfItems, setPageOfItems] = useState([])
+
   const handleCheckboxChange = (e) => {
     if (e.target.checked)
       selectAllGames()
@@ -23,11 +24,12 @@ const ListGame = ({ gamelist, selectedGames
     setPageOfItems(pageOfItems)
   }
 
-  const isAllSelected = () => selectedGames.length === gamelist.game.length
+  const isAllSelected = () => selectedGames.length === games.length
 
-  if (gamelist.game.length > 0)
+  if (games.length > 0)
     return (
       <div>
+        <Search />
         <Table bordered hoverable narrow fullwidth>
           <Table.Head>
             <Table.Row>
@@ -48,7 +50,7 @@ const ListGame = ({ gamelist, selectedGames
             }
           </Table.Body>
         </Table>
-        <Pagination items={gamelist.game} initialPage={1} onChangePage={onChangePage} />
+        <Pagination items={games} initialPage={1} onChangePage={onChangePage} />
       </div>
     )
 
@@ -57,7 +59,7 @@ const ListGame = ({ gamelist, selectedGames
 
 const mapStateToProps = store => ({
   selectedGames: store.gamelistState.selectedGames,
-  gamelist: store.gamelistState.gamelist
+  games: store.gamelistState.games,
 })
 
 const mapDispatchToProps = dispatch =>

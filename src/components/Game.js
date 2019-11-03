@@ -2,11 +2,12 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { editGame, delGame, clearGame, selectGame, unSelectGame } from '../actions'
 import { Table, Checkbox, Button, Icon } from 'rbx'
 import { FaTrash } from 'react-icons/fa'
+import fs from 'fs'
+import { editGame, delGame, clearGame, selectGame, unSelectGame } from '../actions'
 
-const Game = ({ game, storedGame, selectedGames
+const Game = ({ basePath, game, storedGame, selectedGames
               , editGame, delGame, clearGame, selectGame, unSelectGame
               }) => {
 
@@ -31,12 +32,23 @@ const Game = ({ game, storedGame, selectedGames
 
   const isChecked = game => selectedGames.includes(game.md5)
 
+  const isRomExist = (basePath, game) => {
+    let romPath
+    if (process.platform === 'win32') {
+      romPath = `${basePath}${game.path.replace("/","\\")}`
+    } else {
+      romPath = `${basePath}${game.path}`
+    }
+    
+    return fs.existsSync(romPath)
+  }
+
   const smallCell = {
     width: '5px'  
   }
 
   return (
-    <Table.Row selected={isSelected(game)}>  
+    <Table.Row selected={isSelected(game)} style={ isRomExist(basePath,game) ? {} : { background: 'yellow' }}>  
       <Table.Cell style={smallCell}>
         <Checkbox checked={isChecked(game)} onChange={e => handleCheckboxChange(game)}/>
       </Table.Cell>
@@ -55,8 +67,9 @@ const Game = ({ game, storedGame, selectedGames
 }
 
 const mapStateToProps = store => ({
+  basePath: store.gamelistState.basePath,
   selectedGames: store.gamelistState.selectedGames,
-  storedGame: store.gamelistState.game
+  storedGame: store.gamelistState.game,
 })
 
 const mapDispatchToProps = dispatch =>

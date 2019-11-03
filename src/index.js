@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import "rbx/index.css"
-import "./index.scss"
+import { Provider } from 'react-redux'
+import 'rbx/index.css'
+import './index.scss'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import { Provider } from 'react-redux'
 import configureAppStore from './store'
 
 const store = configureAppStore()
